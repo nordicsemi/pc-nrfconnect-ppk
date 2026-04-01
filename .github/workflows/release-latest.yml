@@ -6,7 +6,7 @@ on:
 
 jobs:
     release:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/release-app.yml@main
+        uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/release-app.yml@main
         with:
             source: latest (internal)
         secrets: inherit

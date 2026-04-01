@@ -8,4 +8,4 @@ on:
 
 jobs:
     build:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/build-app.yml@main
+        uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/build-app.yml@main

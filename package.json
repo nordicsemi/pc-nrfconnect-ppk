@@ -3,10 +3,10 @@
     "version": "4.4.0",
     "displayName": "Power Profiler",
     "description": "App for use with Nordic Power Profiler Kits",
-    "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk",
+    "homepage": "https://github.com/nordicsemi/pc-nrfconnect-ppk",
     "repository": {
         "type": "git",
-        "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk.git"
+        "url": "https://github.com/nordicsemi/pc-nrfconnect-ppk.git"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "SEE LICENSE IN LICENSE",
