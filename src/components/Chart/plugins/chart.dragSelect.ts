@@ -80,6 +80,36 @@ const plugin: Plugin<'line'> = {
         canvas.addEventListener('pointerleave', dragSelect.pointerUpHandler);
     },
 
+    afterDestroy(chart: AmpereChartJS) {
+        const { canvas } = chart.ctx;
+        const { dragSelect } = chart;
+
+        if (dragSelect) {
+            if (dragSelect.pointerDownHandler) {
+                canvas.removeEventListener(
+                    'pointerdown',
+                    dragSelect.pointerDownHandler,
+                );
+            }
+            if (dragSelect.pointerMoveHandler) {
+                canvas.removeEventListener(
+                    'pointermove',
+                    dragSelect.pointerMoveHandler,
+                );
+            }
+            if (dragSelect.pointerUpHandler) {
+                canvas.removeEventListener(
+                    'pointerup',
+                    dragSelect.pointerUpHandler,
+                );
+                canvas.removeEventListener(
+                    'pointerleave',
+                    dragSelect.pointerUpHandler,
+                );
+            }
+        }
+    },
+
     beforeDraw(chart: AmpereChartJS) {
         const {
             chartArea: { left, right, top, bottom: areaBottom },

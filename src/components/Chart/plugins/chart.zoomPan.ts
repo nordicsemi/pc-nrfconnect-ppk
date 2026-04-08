@@ -513,6 +513,39 @@ const plugin: Plugin<'line'> = {
             false,
         );
     },
+
+    afterDestroy(chart: AmpereChartJS) {
+        const { canvas } = chart.ctx;
+        const { zoomPan } = chart;
+
+        if (zoomPan) {
+            if (zoomPan.wheelHandler) {
+                canvas.removeEventListener('wheel', zoomPan.wheelHandler);
+            }
+            if (zoomPan.pointerDownHandler) {
+                canvas.removeEventListener(
+                    'pointerdown',
+                    zoomPan.pointerDownHandler,
+                );
+            }
+            if (zoomPan.pointerMoveHandler) {
+                canvas.removeEventListener(
+                    'pointermove',
+                    zoomPan.pointerMoveHandler,
+                );
+            }
+            if (zoomPan.pointerUpHandler) {
+                canvas.removeEventListener(
+                    'pointerup',
+                    zoomPan.pointerUpHandler,
+                );
+                canvas.removeEventListener(
+                    'pointerleave',
+                    zoomPan.pointerUpHandler,
+                );
+            }
+        }
+    },
 };
 
 export default plugin;
