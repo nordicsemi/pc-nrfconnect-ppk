@@ -130,6 +130,9 @@ class PPK2Device:
         # Remainder buffer for partial 4-byte frames
         self._remainder = b""
 
+        # Power mode: True = Source (SMU) mode, False = Ampere mode
+        self._source_mode: bool = False
+
     # ------------------------------------------------------------------
     # Serial port management
     # ------------------------------------------------------------------
@@ -237,8 +240,14 @@ class PPK2Device:
         :param source_mode: *True* → Source (SMU) mode (PPK2 powers the DUT).
                             *False* → Ampere mode (external power source).
         """
+        self._source_mode = source_mode
         mode_byte = 2 if source_mode else 1
         self._send([CMD_SET_POWER_MODE, mode_byte])
+        time.sleep(0.05)
+
+    def set_device_running(self, enable: bool) -> None:
+        """Toggle DUT power: True = ON [0x0C, 0x01], False = OFF [0x0C, 0x00]."""
+        self._send([CMD_DEVICE_RUNNING_SET, 1 if enable else 0])
         time.sleep(0.05)
 
     def set_vdd(self, vdd_mv: int) -> None:
@@ -262,11 +271,15 @@ class PPK2Device:
         self.data_loss_counter = 0
         self._remainder = b""
 
+        if self._source_mode:
+            self.set_device_running(True)
         self._send([CMD_AVERAGE_START])
 
     def stop_averaging(self) -> None:
         """Stop continuous measurement (AverageStop command)."""
         self._send([CMD_AVERAGE_STOP])
+        if self._source_mode:
+            self.set_device_running(False)
 
     # ------------------------------------------------------------------
     # ADC conversion and spike filter
