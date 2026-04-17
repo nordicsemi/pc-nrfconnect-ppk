@@ -7,3 +7,5 @@ jest.json
 log.txt
 node_modules
 npm-debug.log
+__pycache__/
+*.pyc
