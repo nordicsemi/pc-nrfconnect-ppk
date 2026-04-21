@@ -27,10 +27,20 @@ interface TriggerLevelPlugin extends Plugin<'line'> {
     pointerDownHandler: (event: PointerEvent, chart: AmpereChartJS) => void;
     pointerMoveHandler: (event: PointerEvent, chart: AmpereChartJS) => void;
     pointerLeaveHandler: (chart: AmpereChartJS) => void;
+    handlerRegistry: Map<
+        AmpereChartJS,
+        {
+            pointerDownListener: (event: PointerEvent) => void;
+            pointerMoveListener: (event: PointerEvent) => void;
+            pointerUpListener: () => void;
+            pointerLeaveListener: () => void;
+        }
+    >;
 }
 
 const plugin: TriggerLevelPlugin = {
     id: 'triggerLevel',
+    handlerRegistry: new Map(),
 
     getCoords(chart: AmpereChartJS) {
         const {
@@ -120,18 +130,46 @@ const plugin: TriggerLevelPlugin = {
     beforeInit(chart: AmpereChartJS) {
         chart.triggerLine = { y: null };
         const { canvas } = chart.ctx;
-        canvas.addEventListener('pointerdown', evt =>
-            plugin.pointerDownHandler(evt, chart),
-        );
-        canvas.addEventListener('pointermove', evt =>
-            plugin.pointerMoveHandler(evt, chart),
-        );
-        canvas.addEventListener('pointerup', () =>
-            plugin.pointerLeaveHandler(chart),
-        );
-        canvas.addEventListener('pointerleave', () =>
-            plugin.pointerLeaveHandler(chart),
-        );
+
+        const pointerDownListener = (evt: PointerEvent) =>
+            plugin.pointerDownHandler(evt, chart);
+        const pointerMoveListener = (evt: PointerEvent) =>
+            plugin.pointerMoveHandler(evt, chart);
+        const pointerUpListener = () => plugin.pointerLeaveHandler(chart);
+        const pointerLeaveListener = () => plugin.pointerLeaveHandler(chart);
+
+        canvas.addEventListener('pointerdown', pointerDownListener);
+        canvas.addEventListener('pointermove', pointerMoveListener);
+        canvas.addEventListener('pointerup', pointerUpListener);
+        canvas.addEventListener('pointerleave', pointerLeaveListener);
+
+        plugin.handlerRegistry.set(chart, {
+            pointerDownListener,
+            pointerMoveListener,
+            pointerUpListener,
+            pointerLeaveListener,
+        });
+    },
+
+    afterDestroy(chart: AmpereChartJS) {
+        const handlers = plugin.handlerRegistry.get(chart);
+        if (handlers) {
+            const { canvas } = chart.ctx;
+            canvas.removeEventListener(
+                'pointerdown',
+                handlers.pointerDownListener,
+            );
+            canvas.removeEventListener(
+                'pointermove',
+                handlers.pointerMoveListener,
+            );
+            canvas.removeEventListener('pointerup', handlers.pointerUpListener);
+            canvas.removeEventListener(
+                'pointerleave',
+                handlers.pointerLeaveListener,
+            );
+            plugin.handlerRegistry.delete(chart);
+        }
     },
 
     afterDraw(chart: AmpereChartJS) {

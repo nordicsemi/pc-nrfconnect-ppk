@@ -20,12 +20,20 @@ interface CrossHairPlugin extends Plugin<'line'> {
     };
     pointerMoveHandler: (event: PointerEvent, chart: AmpereChartJS) => void;
     pointerLeaveHandler: () => void;
+    handlerRegistry: Map<
+        AmpereChartJS,
+        {
+            pointerMoveListener: (event: PointerEvent) => void;
+            pointerLeaveListener: () => void;
+        }
+    >;
 }
 
 const plugin: CrossHairPlugin = {
     id: 'crossHair',
     instances: [],
     moveEvent: null,
+    handlerRegistry: new Map(),
 
     pointerMoveHandler(event, chart) {
         const {
@@ -71,10 +79,17 @@ const plugin: CrossHairPlugin = {
         plugin.instances.push(chart);
 
         const { canvas } = chart.ctx;
-        canvas.addEventListener('pointermove', event =>
-            plugin.pointerMoveHandler(event, chart),
-        );
-        canvas.addEventListener('pointerleave', plugin.pointerLeaveHandler);
+        const pointerMoveListener = (event: PointerEvent) =>
+            plugin.pointerMoveHandler(event, chart);
+        const pointerLeaveListener = () => plugin.pointerLeaveHandler();
+
+        canvas.addEventListener('pointermove', pointerMoveListener);
+        canvas.addEventListener('pointerleave', pointerLeaveListener);
+
+        plugin.handlerRegistry.set(chart, {
+            pointerMoveListener,
+            pointerLeaveListener,
+        });
     },
 
     afterDraw(chart: AmpereChartJS) {
@@ -185,6 +200,21 @@ const plugin: CrossHairPlugin = {
         );
         if (i > -1) {
             plugin.instances.splice(i, 1);
+        }
+
+        const chart = chartInstance as AmpereChartJS;
+        const handlers = plugin.handlerRegistry.get(chart);
+        if (handlers) {
+            const { canvas } = chart.ctx;
+            canvas.removeEventListener(
+                'pointermove',
+                handlers.pointerMoveListener,
+            );
+            canvas.removeEventListener(
+                'pointerleave',
+                handlers.pointerLeaveListener,
+            );
+            plugin.handlerRegistry.delete(chart);
         }
     },
 };
