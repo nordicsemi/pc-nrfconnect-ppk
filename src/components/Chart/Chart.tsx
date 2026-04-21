@@ -249,17 +249,14 @@ const Chart = () => {
         [dispatch],
     );
 
-    useHotkeyAction(HotkeyActionType.SELECT_ALL, () => {
+    const hotkeySelectAllCb = useCallback(() => {
         if (DataManager().getTimestamp() > 0) {
             chartCursor(0, DataManager().getTimestamp());
         }
-    });
+    }, [chartCursor]);
+    useHotkeyAction(HotkeyActionType.SELECT_ALL, hotkeySelectAllCb);
 
-    useHotkeyAction(HotkeyActionType.SELECT_NONE, () => {
-        resetCursor();
-    });
-
-    useHotkeyAction(HotkeyActionType.ZOOM_TO_SELECTION, () => {
+    const hotkeyZoomToSelectionCb = useCallback(() => {
         const zoomToSelectedArea =
             (): AppThunk<RootState> => (_dispatch, getState) => {
                 const { cursorBegin, cursorEnd } = getCursorRange(getState());
@@ -269,7 +266,11 @@ const Chart = () => {
             };
 
         dispatch(zoomToSelectedArea());
-    });
+    }, [dispatch, chartWindow]);
+    useHotkeyAction(
+        HotkeyActionType.ZOOM_TO_SELECTION,
+        hotkeyZoomToSelectionCb,
+    );
 
     const { digitalChannels, digitalChannelsVisible } = useSelector(
         getChartDigitalChannelInfo,
@@ -315,6 +316,7 @@ const Chart = () => {
         selectionStateAbortController.current?.abort();
         chartCursor(null, null);
     }, [chartCursor]);
+    useHotkeyAction(HotkeyActionType.SELECT_NONE, resetCursor);
 
     const zoomPanCallback = useCallback(
         (
@@ -449,6 +451,7 @@ const Chart = () => {
             );
             return () => {
                 clearTimeout(debounce);
+                selectionStateAbortController.current?.abort();
             };
         }
 

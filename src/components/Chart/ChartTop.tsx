@@ -133,7 +133,7 @@ const ChartTop = ({
                     </div>
                     <div className="tw-w-38 tw-order-1 tw-flex tw-flex-row tw-justify-end">
                         <Toggle
-                            label={`${live ? `(${fps} FPS) ` : ''}LIVE VIEW`}
+                            label={`${live && fps > 0 ? `(${fps} FPS) ` : ''}LIVE VIEW`}
                             onToggle={onLiveModeChange}
                             isToggled={live}
                             variant="primary"

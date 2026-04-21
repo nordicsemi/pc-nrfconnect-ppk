@@ -491,4 +491,43 @@ describe('ReadBuffers', () => {
             expect.anything(),
         ); // Buffer right
     });
+
+    test('Short disk read is supplemented from in-memory write buffer', async () => {
+        // After beforeEach: 6 bytes written [0,1,2,3,4,5], 3 write pages full.
+        // Append one more byte to push the oldest write page out of cache.
+        await fileBuffer.append(Buffer.from([6]));
+        // Write buffer now holds pages [2,3], [4,5], [6].
+        // Page [0,1] was evicted — only on disk.
+
+        // Mock fs.read to return a short read: only 6 bytes of 7 requested,
+        // simulating the unflushed write page not yet on disk.
+        castToJest(fs.read).mockImplementationOnce(
+            (
+                _fd: number,
+                buffer: Uint8Array,
+                _offset: number,
+                _length: number,
+                position: fs.ReadPosition | null,
+                callback: (
+                    err: NodeJS.ErrnoException | null,
+                    bytesRead: number,
+                    buffer: Uint8Array,
+                ) => void,
+            ) => {
+                const shortRead = 6;
+                for (let i = 0; i < shortRead; i += 1) {
+                    buffer[i] = Number(position) + i;
+                }
+                callback(null, shortRead, buffer);
+            },
+        );
+
+        const numberOfBytes = await fileBuffer.read(readBuffer, 0, 7);
+
+        expect(fs.read).toBeCalledTimes(1);
+        expect(numberOfBytes).toEqual(7);
+        expect(readBuffer.subarray(0, numberOfBytes)).toStrictEqual(
+            Buffer.from([0, 1, 2, 3, 4, 5, 6]),
+        );
+    });
 });

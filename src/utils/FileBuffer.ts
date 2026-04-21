@@ -498,11 +498,29 @@ export class FileBuffer {
             this.#cancelBufferOperations.get(op)?.abort();
         });
 
-        const bytesRead = await this.#readRange(
+        let bytesRead = await this.#readRange(
             buffer,
             numberOfBytesToRead,
             byteOffset,
         );
+
+        // The active write page may not yet be flushed to disk; supplement
+        // any short read from the in-memory write buffer.
+        if (bytesRead < numberOfBytesToRead && this.#writeBuffer) {
+            const supplementOffset = byteOffset + bytesRead;
+            const supplementLength = numberOfBytesToRead - bytesRead;
+            try {
+                readFromCachedData(
+                    this.#writeBuffer.getPages(),
+                    buffer.subarray(bytesRead),
+                    supplementOffset,
+                    supplementLength,
+                );
+                bytesRead = numberOfBytesToRead;
+            } catch {
+                // write buffer doesn't cover this range either
+            }
+        }
 
         const normalizedBegin =
             Math.ceil(byteOffset / this.#bufferPageSize) * this.#bufferPageSize;

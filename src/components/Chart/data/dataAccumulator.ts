@@ -41,7 +41,10 @@ export const calcStats = (
     end = Math.min(normalizeTimeFloor(end), DataManager().getTimestamp());
 
     const maxNumberOfSamplesToProcess = 10_000_000;
-    const buffer = Buffer.alloc(maxNumberOfSamplesToProcess * frameSize);
+    const totalSamples = timestampToIndex(end) - timestampToIndex(begin) + 1;
+    const buffer = Buffer.alloc(
+        Math.min(totalSamples, maxNumberOfSamplesToProcess) * frameSize,
+    );
 
     let sum = 0;
     let len = 0;
@@ -149,7 +152,11 @@ const accumulate = async (
 
     const bytesToRead =
         (timestampToIndex(end) - timestampToIndex(begin) + 1) * frameSize;
-    if (!globalReadBuffer || globalReadBuffer.length < bytesToRead) {
+    if (
+        !globalReadBuffer ||
+        globalReadBuffer.length < bytesToRead ||
+        globalReadBuffer.length > bytesToRead * 4
+    ) {
         globalReadBuffer = Buffer.alloc(bytesToRead);
     }
 
@@ -489,6 +496,7 @@ const compareDigitalChanel = (rhs: number[], lhs: number[]) =>
 
 export const resetCache = () => {
     cachedResult = undefined;
+    globalReadBuffer = undefined;
 };
 
 export type DataAccumulatorInitialiser = () => DataAccumulator;

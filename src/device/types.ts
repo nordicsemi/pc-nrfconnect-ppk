@@ -37,10 +37,15 @@ export interface bufferMessage {
     data: Array<number>;
 }
 
+export interface errorMessage {
+    error: string;
+}
+
 export type serialDeviceMessage =
     | openingMessage
     | startedMessage
-    | bufferMessage;
+    | bufferMessage
+    | errorMessage;
 
 export interface Mask {
     pos: number;

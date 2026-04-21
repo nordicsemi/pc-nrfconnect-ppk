@@ -513,19 +513,14 @@ export const open =
 
         clearInterval(updateRequestInterval);
         let renderIndex: number;
-        let lastRenderRequestTime = 0;
         updateRequestInterval = setInterval(
             () => {
-                const now = Date.now();
                 if (
                     renderIndex !== DataManager().getTotalSavedRecords() &&
                     getState().app.app.samplingRunning &&
-                    isDataLoggerPane(getState()) &&
-                    (DataManager().isInSync() ||
-                        now - lastRenderRequestTime >= 1000) // force 1 FPS
+                    isDataLoggerPane(getState())
                 ) {
-                    const timestamp = now;
-                    lastRenderRequestTime = now;
+                    const timestamp = Date.now();
                     if (getState().app.chart.liveMode) {
                         requestAnimationFrame(() => {
                             /*

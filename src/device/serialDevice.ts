@@ -92,9 +92,11 @@ class SerialDevice extends Device {
             samples: 3,
         };
         this.path = device.serialPorts?.at(0)?.comName;
-        this.child = fork(
-            path.resolve(getAppDir(), 'worker', 'serialDevice.js'),
-        );
+        const workerFile =
+            process.platform === 'darwin'
+                ? 'serialDevice.darwin.js'
+                : 'serialDevice.js';
+        this.child = fork(path.resolve(getAppDir(), 'worker', workerFile));
         this.parser = null;
         this.resetDataLossCounter();
 
@@ -106,6 +108,10 @@ class SerialDevice extends Device {
 
             if ('data' in message && message.data) {
                 this.parser(Buffer.from(message.data));
+                return;
+            }
+            if ('error' in message) {
+                logger.error(message.error);
                 return;
             }
             console.log(`message: ${JSON.stringify(message)}`);
