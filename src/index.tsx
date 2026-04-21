@@ -73,6 +73,8 @@ const ChartWrapper: React.FC<{ active: boolean }> = ({ active }) => {
         return (
             <div className="tw-flex tw-h-full tw-items-center tw-justify-center">
                 <div>
+                    Some small change.
+
                     Currently the device is running in {paneName} mode. Switch
                     to the <span className="tw-uppercase">{paneName}</span> tab
                     to see the results.
