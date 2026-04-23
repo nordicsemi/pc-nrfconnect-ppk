@@ -6,11 +6,7 @@ on:
             ref:
                 description: 'The branch or tag to build'
     pull_request:
-        types:
-            - opened
-            - reopened
-            - synchronize
-            - labeled
+        types: [opened, reopened, synchronize]
 
 jobs:
     build:
