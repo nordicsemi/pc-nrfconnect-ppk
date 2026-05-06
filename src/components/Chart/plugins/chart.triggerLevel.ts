@@ -153,21 +153,26 @@ const plugin: TriggerLevelPlugin = {
 
     afterDestroy(chart: AmpereChartJS) {
         const handlers = plugin.handlerRegistry.get(chart);
+
         if (handlers) {
-            const { canvas } = chart.ctx;
-            canvas.removeEventListener(
-                'pointerdown',
-                handlers.pointerDownListener,
-            );
-            canvas.removeEventListener(
-                'pointermove',
-                handlers.pointerMoveListener,
-            );
-            canvas.removeEventListener('pointerup', handlers.pointerUpListener);
-            canvas.removeEventListener(
-                'pointerleave',
-                handlers.pointerLeaveListener,
-            );
+            const canvas = chart?.ctx?.canvas;
+
+            if (canvas) {
+                canvas.removeEventListener(
+                    'pointerdown',
+                    handlers.pointerDownListener,
+                );
+                canvas.removeEventListener(
+                    'pointermove',
+                    handlers.pointerMoveListener,
+                );
+                canvas.removeEventListener('pointerup', handlers.pointerUpListener);
+                canvas.removeEventListener(
+                    'pointerleave',
+                    handlers.pointerLeaveListener,
+                );
+            }
+
             plugin.handlerRegistry.delete(chart);
         }
     },
