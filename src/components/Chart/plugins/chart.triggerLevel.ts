@@ -166,7 +166,10 @@ const plugin: TriggerLevelPlugin = {
                     'pointermove',
                     handlers.pointerMoveListener,
                 );
-                canvas.removeEventListener('pointerup', handlers.pointerUpListener);
+                canvas.removeEventListener(
+                    'pointerup',
+                    handlers.pointerUpListener,
+                );
                 canvas.removeEventListener(
                     'pointerleave',
                     handlers.pointerLeaveListener,

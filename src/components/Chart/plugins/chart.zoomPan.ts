@@ -515,7 +515,7 @@ const plugin: Plugin<'line'> = {
     },
 
     afterDestroy(chart: AmpereChartJS) {
-        if (! chart || !chart.ctx) {
+        if (!chart || !chart.ctx) {
             return;
         }
 
