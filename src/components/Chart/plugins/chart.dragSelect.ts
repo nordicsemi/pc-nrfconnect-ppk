@@ -81,6 +81,10 @@ const plugin: Plugin<'line'> = {
     },
 
     afterDestroy(chart: AmpereChartJS) {
+        if (!chart || !chart.ctx) {
+            return;
+        }
+
         const { canvas } = chart.ctx;
         const { dragSelect } = chart;
 

@@ -205,15 +205,19 @@ const plugin: CrossHairPlugin = {
         const chart = chartInstance as AmpereChartJS;
         const handlers = plugin.handlerRegistry.get(chart);
         if (handlers) {
-            const { canvas } = chart.ctx;
-            canvas.removeEventListener(
-                'pointermove',
-                handlers.pointerMoveListener,
-            );
-            canvas.removeEventListener(
-                'pointerleave',
-                handlers.pointerLeaveListener,
-            );
+            const canvas = chart?.ctx?.canvas;
+
+            if (canvas) {
+                canvas.removeEventListener(
+                    'pointermove',
+                    handlers.pointerMoveListener,
+                );
+                canvas.removeEventListener(
+                    'pointerleave',
+                    handlers.pointerLeaveListener,
+                );
+            }
+
             plugin.handlerRegistry.delete(chart);
         }
     },
