@@ -60,7 +60,7 @@ const SessionItem = ({
                     <div className="tw-flex tw-flex-row tw-gap-2">
                         <Button
                             variant="secondary"
-                            className=" tw-border-white"
+                            className="tw-border-white"
                             onClick={() => setShowDeleteConfirmation(true)}
                         >
                             Delete
@@ -83,7 +83,7 @@ const SessionItem = ({
                         <div className="tw-flex tw-flex-row tw-gap-2">
                             <Button
                                 variant="secondary"
-                                className=" tw-border-white"
+                                className="tw-border-white"
                                 onClick={() => setShowDeleteConfirmation(false)}
                             >
                                 Cancel
