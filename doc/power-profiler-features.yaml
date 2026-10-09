@@ -1,0 +1,295 @@
+app:
+  id: power-profiler
+  name: Power Profiler
+  repo: pc-nrfconnect-ppk
+
+statuses: [full, unsupported, not_applicable]
+
+general_app_features:
+  - id: select_device
+    name: Select device
+    description: Select a connected PPK2 from the device list to connect to it
+  - id: check_upgrade_ppk2_firmware
+    name: Check/upgrade PPK2 firmware
+    description: Check for required firmware and show a firmware upgrade dialog if needed
+  - id: configure_temp_disk_root_directory
+    name: Configure temp disk root directory
+    description: Set the default directory where sampling files are saved
+  - id: disk_full_auto_stop
+    name: "Disk full auto-stop"
+    description: Define free disk space threshold and automatically stop sampling when reached
+  - id: source_meter_mode
+    name: Source meter mode
+    description: Supply power to the DUT from the PPK2
+  - id: set_supply_voltage
+    name: Set supply voltage
+    description: Set the supply voltage output to the DUT in Source meter mode
+  - id: ampere_meter_mode
+    name: Ampere meter mode
+    description: Measure current with the DUT powered from an external source
+  - id: enable_power_output
+    name: Enable power output
+    description: Toggle power to the DUT on or off
+  - id: data_logger_sampling_mode
+    name: Data logger sampling mode
+    description: Sample power continuously over a period of time
+  - id: set_data_logger_sample_rate
+    name: Set data logger sample rate
+    description: Select samples per second (up to 100 kHz) for data logger sampling
+  - id: set_sampling_duration
+    name: Set sampling duration
+    description: Specify how long sampling lasts (or forever) in data logger mode
+  - id: estimate_disk_space_usage
+    name: Estimate disk space usage
+    description: Estimate disk space usage based on chosen sampling options
+  - id: start_sampling
+    name: Start sampling
+    description: Start sampling measurements
+  - id: stop_sampling
+    name: Stop sampling
+    description: Stop an ongoing sampling session
+  - id: scope_sampling_mode
+    name: Scope sampling mode
+    description: Sample only when trigger conditions are met
+  - id: set_scope_length
+    name: Set scope length
+    description: Set sampling time after the trigger event
+  - id: set_scope_offset
+    name: Set scope offset
+    description: Set sampling time before the trigger event
+  - id: single_trigger_mode
+    name: Single trigger mode
+    description: Stop sampling after one trigger event
+  - id: continuous_trigger_mode
+    name: Continuous trigger mode
+    description: Continue sampling and displaying trigger events until stopped
+  - id: analog_trigger_settings
+    name: Analog trigger settings
+    description: Set analog trigger level and rising/falling edge condition
+  - id: set_analog_trigger_level_via_chart
+    name: Set analog trigger level via chart
+    description: Set the trigger level using an arrow in the chart
+  - id: digital_trigger_settings
+    name: Digital trigger settings
+    description: Configure trigger conditions for digital channels 0–7 with AND/OR logic
+  - id: session_recovery
+    name: Session recovery
+    description: Recover unsaved sampling data from any session longer than 10 seconds
+  - id: delete_saved_session
+    name: Delete saved session
+    description: Deleting unsaved sampling session data
+  - id: load_power_profiler_file
+    name: Load power profiler file
+    description: Open a .ppk2 or .ppk power profiler file
+  - id: save_export_to_ppk2
+    name: Save/export to .ppk2
+    description: Save sampling results to a .ppk2 file
+  - id: convert_ppk_to_ppk2
+    name: Convert .ppk to .ppk2
+    description: Automatically convert a loaded .ppk file to .ppk2 format
+  - id: export_to_csv
+    name: Export to CSV
+    description: Export sampling results to a CSV file with configurable options
+  - id: csv_export_area_selection
+    name: CSV export area selection
+    description: Choose to export all, window, or selected data
+  - id: csv_export_field_selection
+    name: CSV export field selection
+    description: Include timestamp, current, and digital pin fields (combined or separate)
+  - id: estimate_csv_export_size
+    name: Estimate CSV export size
+    description: Display estimated record count, file size, and export time
+  - id: save_screenshot
+    name: Save screenshot
+    description: Save the visible Data logger or Scope view as a PNG image
+  - id: adjust_range_gains
+    name: Adjust range gains
+    description: Add positive or negative gain to individual measurement ranges
+  - id: configure_spike_filter
+    name: Configure spike filter
+    description: "Set spike filter smoothing samples and per-range coefficients"
+  - id: set_voltage_limit
+    name: Set voltage limit
+    description: Set the voltage limit for the measurement
+  - id: restore_default_configurations
+    name: Restore default configurations
+    description: Restore Gains, Spike Filter and Voltage Limit to default values
+  - id: hover_chart_for_values
+    name: Hover chart for values
+    description: Display detailed measurement values on hover
+  - id: scroll_pan_chart
+    name: Scroll/pan chart
+    description: Drag to scroll the chart left and right
+  - id: lock_y_axis
+    name: "Lock Y-axis"
+    description: "Prevent the Y-axis from scaling dynamically"
+  - id: logarithmic_y_axis
+    name: "Logarithmic Y-axis"
+    description: "Enable a logarithmic Y-axis"
+  - id: scale_x_axis_time_frame
+    name: "Scale X-axis time frame"
+    description: "Use time frame buttons to scale the X-axis"
+  - id: live_now_toggle
+    name: Live Now toggle
+    description: Jump back to displaying live measurement in Data logger mode
+  - id: set_scope_level_via_y_axis_slider
+    name: "Set scope level via Y-axis slider"
+    description: "Dynamically select the Level parameter using the Y-axis slider"
+  - id: window_average_max_values
+    name: Window average/max values
+    description: Display average and maximum values for the whole measurement window
+  - id: selection_average_max_values
+    name: Selection average/max values
+    description: Display average and maximum values for a selected time interval
+  - id: make_chart_selection
+    name: Make chart selection
+    description: Select a fragment of the measurement via Shift+drag
+  - id: minimap_navigation
+    name: Minimap navigation
+    description: Navigate the recording via a minimap (Data logger mode)
+  - id: enable_view_digital_channels
+    name: Enable/view digital channels
+    description: Show and inspect digital channel signals below the main chart
+  - id: select_visible_digital_channels
+    name: Select visible digital channels
+    description: Choose which digital channels are displayed
+  - id: toggle_timestamps_display
+    name: Toggle timestamps display
+    description: Show or hide timestamps on the chart
+  - id: relative_absolute_timestamp_mode
+    name: Relative/absolute timestamp mode
+    description: Display timestamps relative to start or as machine time
+  - id: restart_application
+    name: Restart application
+    description: Restart the app via a keyboard shortcut (Ctrl+R / Command+R)
+
+device_specific_features: []
+
+shared_features:
+  - id: restore_defaults
+    name: Restore defaults
+    description: "Restore all app's settings to default"
+  - id: give_feedback
+    name: Give Feedback
+    description: Send a feedback message
+  - id: open_documentation
+    name: Open Documentation
+    description: Open external documentation page
+  - id: verbose_logging
+    name: Verbose Logging
+    description: Turn on verbose logging and restart the app
+  - id: create_system_report
+    name: Create system report
+    description: Generate a txt document with detailed report
+  - id: show_log
+    name: Show Log
+    description: Toggle log window
+  - id: autoscroll_log
+    name: Autoscroll log
+    description: Toggle log window autoscroll
+  - id: open_log_file
+    name: Open log file
+    description: Open the current log file in a text editor
+  - id: clear_log
+    name: Clear Log
+    description: Clear the log window
+
+supported_devices:
+  - device: PPK2
+    pca: PCA63100
+    verification_version:
+    support:
+
+unsupported_devices:
+  - device: "Nordic Thingy:52"
+    pca: PCA20020
+
+  - device: "Nordic Thingy:53"
+    pca: PCA20053
+
+  - device: "Nordic Thingy:91"
+    pca: PCA20035
+
+  - device: "Nordic Thingy:91 X"
+    pca: PCA20049
+
+  - device: nPM 1300 EK
+    pca: PCA10152  
+
+  - device: nPM 1304 EK
+    pca: PCA10195
+
+  - device: nPM 2100 EK
+    pca: PCA10170
+
+  - device: nRF51 DK
+    pca: PCA10028
+
+  - device: nRF51 Dongle
+    pca: PCA10031
+
+  - device: nRF52 DK
+    pca: PCA10040
+
+  - device: nRF52833 DK
+    pca: PCA10100
+
+  - device: nRF52840 DK
+    pca: PCA10056
+
+  - device: nRF52840 Dongle
+    pca: PCA10059
+
+  - device: nRF5340 Audio DK
+    pca: PCA10121
+
+  - device: nRF5340 DK
+    pca: PCA10095
+
+  - device: nRF54H20 DK
+    pca: PCA10175
+
+  - device: nRF54L15 DK
+    pca: PCA10156
+
+  - device: nRF54LC10 DK
+    pca: PCA10226
+
+  - device: nRF54LM20 DK
+    pca: PCA10184
+
+  - device: nRF54LM20 Dongle
+    pca: PCA10208
+
+  - device: nRF54LS05 DK
+    pca: PCA10214
+
+  - device: nRF54LV10 DK
+    pca: PCA10188
+
+  - device: nRF7002 DK
+    pca: PCA10143
+
+  - device: nRF9131 EK
+    pca: PCA10165
+
+  - device: nRF9151 DK
+    pca: PCA10171
+
+  - device: nRF9151 SMA DK
+    pca: PCA10201
+
+  - device: nRF9160 DK
+    pca: PCA10090
+
+  - device: nRF9161 DK
+    pca: PCA10153
+
+  - device: nRF9251 DK
+    pca: PCA10218
+
+  - device: nRF93M1 DK
+    pca: PCA10232
+
+  - device: nRF93M1 DK
+    pca: PCA10237
