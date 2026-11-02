@@ -18,6 +18,7 @@ import DeviceSelector from './components/DeviceSelector';
 import DocumentationSections from './components/DocumentationSections';
 import SidePanel from './components/SidePanel/SidePanel';
 import RecoveryDialogs from './features/recovery/RecoveryDialogs';
+import RemoteControlProvider from './features/remoteControl/RemoteControlProvider';
 import { updateTitle } from './globals';
 import reducers from './slices';
 import { getFileLoaded, isSavePending } from './slices/appSlice';
@@ -97,5 +98,6 @@ render(
         <GlobalHotkeysProvider />
         <RecoveryDialogs />
         <AppTitleHook />
+        <RemoteControlProvider />
     </App>,
 );

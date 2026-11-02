@@ -48,6 +48,7 @@
         "nordic-publish": "node ./dist/nordic-publish.js"
     },
     "devDependencies": {
+        "@modelcontextprotocol/sdk": "^1.32.2",
         "@nordicsemiconductor/pc-nrfconnect-shared": "^248.0.0",
         "@types/archiver": "^6.0.2",
         "@types/fs-extra": "^11.0.4",
@@ -58,7 +59,9 @@
         "mathjs": "^10.6.3",
         "react-chartjs-2": "^5.2.0",
         "redux-mock-store": "^1.5.4",
-        "unzipper": "^0.10.14"
+        "unzipper": "^0.10.14",
+        "zod": "^3.25.76",
+        "zod-to-json-schema": "^3.25.2"
     },
     "prettier": "@nordicsemiconductor/pc-nrfconnect-shared/config/prettier.config.js",
     "dependencies": {
