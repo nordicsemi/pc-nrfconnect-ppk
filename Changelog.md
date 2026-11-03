@@ -1,3 +1,25 @@
+## Unreleased
+
+### Added
+
+- Remote Control group in the side panel with an embedded MCP server and a REST
+  API, so that scripts and AI agents can control the PPK2: set the mode, voltage
+  and sample rate, switch the power output, start and stop sampling, and read
+  statistics or export the recorded data as CSV. Both are off by default, listen
+  on `127.0.0.1:8098` and can be protected with a token.
+- Button to copy a `.mcp.json` snippet for Claude Code.
+- The voltage that the remote control may set is limited by the voltage limit in
+  Advanced Configuration. A client can lower it further for itself with
+  `?max_mV=` in its URL, and the power output is not switched on in source mode
+  while the voltage is above the limit.
+- OpenAPI 3.1 description of the REST API at `GET /api/openapi.json`, with a
+  button to copy its URL in the Remote Control group.
+- Remote control `trace` operation: the current over a window as a compact time
+  series (average, minimum and maximum per point) with the digital channels and
+  the times of their changes. `status` reports the digital channels enabled in
+  the app, `export_csv` adds their `D0` to `D7` columns, and `stats`, `trace`
+  and `export_csv` show their window as the selection in the chart.
+
 ## 4.4.1 - 2026-06-10
 
 ### Fixed

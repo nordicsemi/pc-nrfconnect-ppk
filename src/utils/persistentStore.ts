@@ -26,6 +26,11 @@ const DIGITAL_CHANNELS = 'digitalChannels';
 const DIGITAL_CHANNELS_TRIGGERS = 'digitalChannelsTriggers';
 const TIMESTAMPS_VISIBLE = 'timestampsVisible';
 const VOLTAGE_REGULATOR_MAX_CAP_PPK2 = 'voltageRegulatorMaxCap';
+const REMOTE_CONTROL_MCP_ENABLED = 'remoteControl.mcp.enabled';
+const REMOTE_CONTROL_MCP_LISTEN = 'remoteControl.mcp.listen';
+const REMOTE_CONTROL_REST_ENABLED = 'remoteControl.rest.enabled';
+const REMOTE_CONTROL_REST_LISTEN = 'remoteControl.rest.listen';
+const REMOTE_CONTROL_TOKEN = 'remoteControl.token';
 
 const store = getPersistentStore<StoreSchema>({
     migrations: {
@@ -66,6 +71,15 @@ export type digitalChannelStateTupleOf8 = [
     DigitalChannelTriggerStatesEnum,
 ];
 
+export interface RemoteControlConfig {
+    mcpEnabled: boolean;
+    mcpListen: string;
+    restEnabled: boolean;
+    restListen: string;
+    // Empty means no authentication.
+    token: string;
+}
+
 export type TimeUnit = 's' | 'm' | 'h' | 'd' | 'inf';
 
 interface StoreSchema {
@@ -81,6 +95,12 @@ interface StoreSchema {
     [DIGITAL_CHANNELS_TRIGGERS]: digitalChannelStateTupleOf8;
 
     [VOLTAGE_REGULATOR_MAX_CAP_PPK2]: number;
+
+    [REMOTE_CONTROL_MCP_ENABLED]: boolean;
+    [REMOTE_CONTROL_MCP_LISTEN]: string;
+    [REMOTE_CONTROL_REST_ENABLED]: boolean;
+    [REMOTE_CONTROL_REST_LISTEN]: string;
+    [REMOTE_CONTROL_TOKEN]: string;
 
     [maxSampleFrequency: SAMPLE_FREQUENCY]: number;
     [maxSampleFrequency: DURATION_SECONDS]: number;
@@ -210,3 +230,23 @@ export const getDoNotAskStartAndClear = (defaultValue: boolean) =>
 export const setDoNotAskStartAndClear = (value: boolean) => {
     store.set(`start-and-clear-data`, value);
 };
+
+export const getRemoteControlSettings = (
+    defaults: RemoteControlConfig,
+): RemoteControlConfig => ({
+    mcpEnabled: store.get(REMOTE_CONTROL_MCP_ENABLED, defaults.mcpEnabled),
+    mcpListen: store.get(REMOTE_CONTROL_MCP_LISTEN, defaults.mcpListen),
+    restEnabled: store.get(REMOTE_CONTROL_REST_ENABLED, defaults.restEnabled),
+    restListen: store.get(REMOTE_CONTROL_REST_LISTEN, defaults.restListen),
+    token: store.get(REMOTE_CONTROL_TOKEN, defaults.token),
+});
+export const setRemoteControlMcpEnabled = (value: boolean) =>
+    store.set(REMOTE_CONTROL_MCP_ENABLED, value);
+export const setRemoteControlMcpListen = (value: string) =>
+    store.set(REMOTE_CONTROL_MCP_LISTEN, value);
+export const setRemoteControlRestEnabled = (value: boolean) =>
+    store.set(REMOTE_CONTROL_REST_ENABLED, value);
+export const setRemoteControlRestListen = (value: string) =>
+    store.set(REMOTE_CONTROL_REST_LISTEN, value);
+export const setRemoteControlToken = (value: string) =>
+    store.set(REMOTE_CONTROL_TOKEN, value);
