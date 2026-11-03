@@ -13,7 +13,7 @@
 - **Changelog**
   - [ ] Updated
   - [ ] Update not needed
-- **Support doc in docs/...yml**
+- **Feature support in doc/app-features.yml**
   - [ ] Updated
   - [ ] Can stay the same
 - **Greg's review**
