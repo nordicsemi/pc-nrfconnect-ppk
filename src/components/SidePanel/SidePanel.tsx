@@ -36,6 +36,7 @@ import Instructions from './Instructions';
 import LiveModeSettings from './LiveModeSettings';
 import { Load, Save } from './LoadSave';
 import PowerMode from './PowerMode';
+import RemoteControlSettings from './RemoteControlSettings';
 import SamplingSettings from './SamplingSettings';
 import SessionSettings from './SessionSettings';
 import SpikeFilter from './SpikeFilter';
@@ -114,6 +115,7 @@ export default () => {
             {showTriggerSettings && <TriggerSettings />}
             {showDisplayOptions && <DisplayOptions />}
             {showSessionSettings && <SessionSettings />}
+            <RemoteControlSettings />
             {showAdvancedConfiguration && (
                 <Group
                     collapsible

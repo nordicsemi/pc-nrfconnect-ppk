@@ -9,6 +9,7 @@ import { combineReducers } from 'redux';
 
 import minimap from '../features/minimap/minimapSlice';
 import progressDialog from '../features/ProgressDialog/progressSlice';
+import remoteControl from '../features/remoteControl/remoteControlSlice';
 import app from './appSlice';
 import chart from './chartSlice';
 import dataLogger from './dataLoggerSlice';
@@ -31,6 +32,7 @@ const appReducer = combineReducers({
     dataLogger,
     progressDialog,
     trigger,
+    remoteControl,
 });
 
 export default appReducer;

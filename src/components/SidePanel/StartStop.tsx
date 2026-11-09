@@ -7,15 +7,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    type AppDispatch,
     ConfirmationDialog,
     logger,
     StartStopButton,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import fs from 'fs';
 import { unit } from 'mathjs';
 
-import { samplingStart, samplingStop } from '../../actions/deviceActions';
+import { samplingStop } from '../../actions/deviceActions';
+import { startSamplingSession } from '../../actions/samplingSessionActions';
 import { DataManager } from '../../globals';
 import {
     appState,
@@ -23,39 +24,22 @@ import {
     getSessionRootFolder,
     isSavePending,
 } from '../../slices/appSlice';
-import {
-    getRecordingMode,
-    type RecordingMode,
-    resetChartTime,
-    resetCursor,
-} from '../../slices/chartSlice';
+import { getRecordingMode } from '../../slices/chartSlice';
 import {
     dataLoggerState,
     getSampleFrequency,
 } from '../../slices/dataLoggerSlice';
-import {
-    getDigitalChannelsTriggerLogic,
-    getDigitalChannelsTriggersStates,
-    getTriggerCategory,
-    getTriggerEdge,
-    getTriggerOffset,
-    getTriggerRecordingLength,
-    getTriggerType,
-    getTriggerValue,
-    resetTriggerOrigin,
-} from '../../slices/triggerSlice';
 import { convertTimeToSeconds, formatDuration } from '../../utils/duration';
 import {
     calcFileSize,
     getFreeSpace,
     remainingTime as calcRemainingTime,
 } from '../../utils/fileUtils';
-import { isDataLoggerPane, isScopePane } from '../../utils/panes';
+import { isDataLoggerPane } from '../../utils/panes';
 import {
     getDoNotAskStartAndClear,
     setDoNotAskStartAndClear,
 } from '../../utils/persistentStore';
-import { resetCache } from '../Chart/data/dataAccumulator';
 
 const fmtOpts = { notation: 'fixed' as const, precision: 1 };
 
@@ -65,10 +49,9 @@ const calcFileSizeString = (sampleFreq: number, durationSeconds: number) => {
 };
 
 export default () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const onWriteListener = useRef<() => void>();
-    const scopePane = useSelector(isScopePane);
     const dataLoggerPane = useSelector(isDataLoggerPane);
     const recordingMode = useSelector(getRecordingMode);
     const { samplingRunning } = useSelector(appState);
@@ -77,13 +60,6 @@ export default () => {
     const savePending = useSelector(isSavePending);
     const sessionFolder = useSelector(getSessionRootFolder);
     const diskFullTrigger = useSelector(getDiskFullTrigger);
-    const triggerCategory = useSelector(getTriggerCategory);
-    const triggerRecordingLength = useSelector(getTriggerRecordingLength);
-    const triggerOffset = useSelector(getTriggerOffset);
-    const triggerEdge = useSelector(getTriggerEdge);
-    const triggerLogic = useSelector(getDigitalChannelsTriggerLogic);
-    const triggerStates = useSelector(getDigitalChannelsTriggersStates);
-    const triggerValue = useSelector(getTriggerValue);
 
     const sampleIndefinitely = durationUnit === 'inf';
 
@@ -96,64 +72,21 @@ export default () => {
     const [showDialog, setShowDialog] = useState(false);
 
     const startAndClear = async () => {
-        await DataManager().reset();
-        dispatch(resetChartTime());
-        dispatch(resetTriggerOrigin());
-        dispatch(resetCursor());
-        resetCache();
+        setShowDialog(false);
 
-        const mode: RecordingMode = scopePane ? 'Scope' : 'DataLogger';
+        const result = await dispatch(startSamplingSession());
 
-        const telemetryMetadata = {
-            mode,
-            ...(mode === 'DataLogger' && {
-                samplesPerSecond: DataManager().getSamplesPerSecond(),
-            }),
-            ...(mode === 'Scope' && {
-                triggerRecordingLength,
-                triggerOffset,
-                triggerCategory,
-                triggerType,
-                ...(triggerCategory === 'Analog' && {
-                    triggerValue,
-                    triggerEdge,
-                }),
-                ...(triggerCategory === 'Digital' && {
-                    triggerLogic,
-                    triggerStates,
-                }),
-            }),
-        };
+        if (result.freeSpace !== undefined) setFreeSpace(result.freeSpace);
 
-        telemetry.sendEvent('StartSampling', telemetryMetadata);
-
-        if (mode === 'DataLogger') {
-            if (!fs.existsSync(sessionFolder)) {
-                logger.error(
-                    `Temp Disk root folder '${sessionFolder}' does not exists. Change the root directory in the Temp Disk settings on the side panel.`,
-                );
-                setShowDialog(false);
-                return;
+        if (!result.ok) {
+            if (result.error === 'temp_disk_missing') {
+                logger.error(result.message);
+            } else {
+                logger.warn(result.message);
             }
-
-            const space = Math.max(
-                0,
-                await getFreeSpace(diskFullTrigger, sessionFolder),
-            );
-
-            setFreeSpace(space);
-
-            if (space === 0) {
-                logger.warn(
-                    'Disk is full. Unable to start sampling. Change the disk full trigger threshold or free up disk memory.',
-                );
-                setShowDialog(false);
-                return;
-            }
+            return;
         }
 
-        setShowDialog(false);
-        await dispatch(samplingStart());
         onWriteListener.current?.();
         onWriteListener.current = DataManager().onFileWrite(() => {
             getFreeSpace(diskFullTrigger, sessionFolder).then(s => {
@@ -184,8 +117,6 @@ export default () => {
     useEffect(() => {
         setRemainingTime(calcRemainingTime(freeSpace, sampleFreq));
     }, [freeSpace, sampleFreq]);
-
-    const triggerType = useSelector(getTriggerType);
 
     return (
         <>
