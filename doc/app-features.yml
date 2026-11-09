@@ -71,13 +71,13 @@ general_app_features:
     description: Set the trigger level using an arrow in the chart
   - id: digital_trigger_settings
     name: Digital trigger settings
-    description: Configure trigger conditions for digital channels 0–7 with AND/OR logic
+    description: Configure trigger conditions for digital channels 0-7 with AND/OR logic
   - id: session_recovery
     name: Session recovery
     description: Recover unsaved sampling data from any session longer than 10 seconds
   - id: delete_saved_session
     name: Delete saved session
-    description: Deleting unsaved sampling session data
+    description: Delete unsaved sampling session data
   - id: load_power_profiler_file
     name: Load power profiler file
     description: Open a .ppk2 or .ppk power profiler file
@@ -107,7 +107,7 @@ general_app_features:
     description: Add positive or negative gain to individual measurement ranges
   - id: configure_spike_filter
     name: Configure spike filter
-    description: "Set spike filter smoothing samples and per-range coefficients"
+    description: Set spike filter smoothing samples and per-range coefficients
   - id: set_voltage_limit
     name: Set voltage limit
     description: Set the voltage limit for the measurement
@@ -168,7 +168,7 @@ device_specific_features: []
 shared_features:
   - id: restore_defaults
     name: Restore defaults
-    description: "Restore all app's settings to default"
+    description: Restore all app's settings to default
   - id: give_feedback
     name: Give Feedback
     description: Send a feedback message
@@ -201,20 +201,20 @@ supported_devices:
     support:
 
 unsupported_devices:
-  - device: "Nordic Thingy:52"
+  - device: Nordic Thingy:52
     pca: PCA20020
 
-  - device: "Nordic Thingy:53"
+  - device: Nordic Thingy:53
     pca: PCA20053
 
-  - device: "Nordic Thingy:91"
+  - device: Nordic Thingy:91
     pca: PCA20035
 
-  - device: "Nordic Thingy:91 X"
+  - device: Nordic Thingy:91 X
     pca: PCA20049
 
   - device: nPM 1300 EK
-    pca: PCA10152  
+    pca: PCA10152
 
   - device: nPM 1304 EK
     pca: PCA10195
