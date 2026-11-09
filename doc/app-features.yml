@@ -16,7 +16,7 @@ general_app_features:
     name: Configure temp disk root directory
     description: Set the default directory where sampling files are saved
   - id: disk_full_auto_stop
-    name: "Disk full auto-stop"
+    name: Disk full auto-stop
     description: Define free disk space threshold and automatically stop sampling when reached
   - id: source_meter_mode
     name: Source meter mode
@@ -121,20 +121,20 @@ general_app_features:
     name: Scroll/pan chart
     description: Drag to scroll the chart left and right
   - id: lock_y_axis
-    name: "Lock Y-axis"
-    description: "Prevent the Y-axis from scaling dynamically"
+    name: Lock Y-axis
+    description: Prevent the Y-axis from scaling dynamically
   - id: logarithmic_y_axis
-    name: "Logarithmic Y-axis"
-    description: "Enable a logarithmic Y-axis"
+    name: Logarithmic Y-axis
+    description: Enable a logarithmic Y-axis
   - id: scale_x_axis_time_frame
-    name: "Scale X-axis time frame"
-    description: "Use time frame buttons to scale the X-axis"
+    name: Scale X-axis time frame
+    description: Use time frame buttons to scale the X-axis
   - id: live_now_toggle
     name: Live Now toggle
     description: Jump back to displaying live measurement in Data logger mode
   - id: set_scope_level_via_y_axis_slider
-    name: "Set scope level via Y-axis slider"
-    description: "Dynamically select the Level parameter using the Y-axis slider"
+    name: Set scope level via Y-axis slider
+    description: Dynamically select the Level parameter using the Y-axis slider
   - id: window_average_max_values
     name: Window average/max values
     description: Display average and maximum values for the whole measurement window
