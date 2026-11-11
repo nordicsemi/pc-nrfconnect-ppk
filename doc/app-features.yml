@@ -14,7 +14,7 @@ general_app_features:
     description: Check for required firmware and show a firmware upgrade dialog if needed
   - id: configure_temp_disk_root_directory
     name: Configure temp disk root directory
-    description: Set the default directory where sampling files are saved
+    description: Set the default directory where session files are saved
   - id: disk_full_auto_stop
     name: Disk full auto-stop
     description: Define free disk space threshold and automatically stop sampling when reached
@@ -75,8 +75,8 @@ general_app_features:
   - id: session_recovery
     name: Session recovery
     description: Recover unsaved sampling data from any session longer than 10 seconds
-  - id: delete_saved_session
-    name: Delete saved session
+  - id: delete_recovered_session
+    name: Delete recovered session
     description: Delete unsaved sampling session data
   - id: load_power_profiler_file
     name: Load power profiler file
