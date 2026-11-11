@@ -211,7 +211,7 @@ unsupported_devices:
     pca: PCA20035
 
   - device: Nordic Thingy:91 X
-    pca: PCA20049
+    pca: PCA20065
 
   - device: nPM 1300 EK
     pca: PCA10152
