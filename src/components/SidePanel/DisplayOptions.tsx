@@ -21,10 +21,12 @@ import { deviceOpen as isDeviceOpen } from '../../slices/appSlice';
 import {
     getChartDigitalChannelInfo,
     isTimestampsVisible,
+    isTraceValueVisible,
     setShowSystemTime,
     showSystemTime,
     toggleDigitalChannels,
     toggleTimestamps,
+    toggleTraceValue,
 } from '../../slices/chartSlice';
 import { isDataLoggerPane } from '../../utils/panes';
 import DigitalChannels from './DigitalChannels';
@@ -34,6 +36,7 @@ export default () => {
     const { digitalChannelsVisible } = useSelector(getChartDigitalChannelInfo);
     const timestampsVisible = useSelector(isTimestampsVisible);
     const systemTime = useSelector(showSystemTime);
+    const traceValueVisible = useSelector(isTraceValueVisible);
     const showMinimap = useSelector(getShowMinimap);
     const dataLoggerPane = useSelector(isDataLoggerPane);
     const deviceOpen = useSelector(isDeviceOpen);
@@ -64,6 +67,14 @@ export default () => {
                         size="sm"
                     />
                 )}
+
+            <Toggle
+                onToggle={() => dispatch(toggleTraceValue())}
+                isToggled={traceValueVisible}
+                label="Show trace value at cursor"
+                title="Show the current of the trace at the cursor position instead of the value at the pointer height. When zoomed out, show the minimum, maximum and average, and the time range and number of samples they cover."
+                variant="primary"
+            />
 
             <Toggle
                 onToggle={() => dispatch(toggleDigitalChannels())}

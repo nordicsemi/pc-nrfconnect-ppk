@@ -25,6 +25,7 @@ const DIGITAL_CHANNELS_VISIBLE = 'digitalChannelsVisible';
 const DIGITAL_CHANNELS = 'digitalChannels';
 const DIGITAL_CHANNELS_TRIGGERS = 'digitalChannelsTriggers';
 const TIMESTAMPS_VISIBLE = 'timestampsVisible';
+const TRACE_VALUE_VISIBLE = 'traceValueVisible';
 const VOLTAGE_REGULATOR_MAX_CAP_PPK2 = 'voltageRegulatorMaxCap';
 
 const store = getPersistentStore<StoreSchema>({
@@ -77,6 +78,7 @@ interface StoreSchema {
     [DIGITAL_CHANNELS_VISIBLE]: boolean;
     [DIGITAL_CHANNELS]: booleanTupleOf8;
     [TIMESTAMPS_VISIBLE]: boolean;
+    [TRACE_VALUE_VISIBLE]: boolean;
 
     [DIGITAL_CHANNELS_TRIGGERS]: digitalChannelStateTupleOf8;
 
@@ -122,6 +124,10 @@ export const setDigitalChannelsVisible = (digitalChannelsVisible: boolean) =>
 export const getTimestampsVisible = () => store.get(TIMESTAMPS_VISIBLE, false);
 export const setTimestampsVisible = (timestampsVisible: boolean) =>
     store.set(TIMESTAMPS_VISIBLE, timestampsVisible);
+
+export const getTraceValueVisible = () => store.get(TRACE_VALUE_VISIBLE, false);
+export const setTraceValueVisible = (traceValueVisible: boolean) =>
+    store.set(TRACE_VALUE_VISIBLE, traceValueVisible);
 
 export const getSampleFreq = (maxSampleFreq: number) =>
     store.get(`sampleFreq-${maxSampleFreq}`, maxSampleFreq);

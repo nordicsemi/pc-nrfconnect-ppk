@@ -59,7 +59,10 @@ import { type booleanTupleOf8 } from '../../utils/persistentStore';
 import type { AmpereChartJS } from './AmpereChart';
 import AmpereChart from './AmpereChart';
 import ChartTop from './ChartTop';
-import dataAccumulatorInitialiser, { calcStats } from './data/dataAccumulator';
+import dataAccumulatorInitialiser, {
+    type AverageLine,
+    calcStats,
+} from './data/dataAccumulator';
 import { type AmpereState, type DigitalChannelStates } from './data/dataTypes';
 import DigitalChannels from './DigitalChannels';
 import SelectionStatBox from './SelectionStatBox';
@@ -115,6 +118,7 @@ const updateChart = async (
     setData: (data: {
         ampereLineData: AmpereState[];
         bitsLineData: DigitalChannelStates[];
+        averageLine: AverageLine[];
     }) => void,
     setProcessing: (processing: boolean) => void,
     setWindowStats: (
@@ -186,6 +190,7 @@ const updateChart = async (
     setData({
         ampereLineData: processedData.ampereLineData,
         bitsLineData: processedData.bitsLineData,
+        averageLine: processedData.averageLine,
     });
 
     setWindowStats({
@@ -403,7 +408,8 @@ const Chart = () => {
     const [data, setData] = useState<{
         ampereLineData: AmpereState[];
         bitsLineData: DigitalChannelStates[];
-    }>({ ampereLineData: [], bitsLineData: [] });
+        averageLine: AverageLine[];
+    }>({ ampereLineData: [], bitsLineData: [], averageLine: [] });
 
     const [windowStats, setWindowStats] = useState<{
         average: number;
@@ -462,7 +468,7 @@ const Chart = () => {
 
     useEffect(() => {
         if (xAxisMax === 0) {
-            setData({ ampereLineData: [], bitsLineData: [] });
+            setData({ ampereLineData: [], bitsLineData: [], averageLine: [] });
             setWindowStats(null);
         }
     }, [xAxisMax]);
@@ -578,6 +584,7 @@ const Chart = () => {
                     chartRef={chartRef}
                     cursorData={cursorData}
                     lineData={data.ampereLineData}
+                    averageLine={data.averageLine}
                 />
                 <TimeSpanBottom
                     cursorBegin={cursorBegin}

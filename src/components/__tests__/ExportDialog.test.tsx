@@ -40,6 +40,7 @@ jest.mock('../../utils/persistentStore', () => ({
     ],
     getDigitalChannelsVisible: () => true,
     getTimestampsVisible: () => false,
+    getTraceValueVisible: () => false,
     getSpikeFilter: () => ({ samples: 3, alpha: 0.18, alpha5: 0.06 }),
     getSamplingMode: () => 'Live',
     getTriggerLevel: () => 1000,

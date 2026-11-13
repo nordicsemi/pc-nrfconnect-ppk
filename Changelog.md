@@ -1,3 +1,12 @@
+## Unreleased
+
+### Added
+
+- Option in **Display options** to show the current of the trace at the cursor
+  position instead of at the pointer height. When zoomed out, the minimum,
+  maximum, and average current at the cursor position are shown, together with
+  the time range and number of samples they cover.
+
 ## 4.4.1 - 2026-06-10
 
 ### Fixed

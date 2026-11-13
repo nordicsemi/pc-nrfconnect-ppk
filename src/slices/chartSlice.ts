@@ -13,9 +13,11 @@ import {
     getDigitalChannels,
     getDigitalChannelsVisible,
     getTimestampsVisible,
+    getTraceValueVisible,
     setDigitalChannels as persistDigitalChannels,
     setDigitalChannelsVisible as persistDigitalChannelsVisible,
     setTimestampsVisible as persistTimestampsVisible,
+    setTraceValueVisible as persistTraceValueVisible,
 } from '../utils/persistentStore';
 import type { RootState } from '.';
 import { getSampleFrequency } from './dataLoggerSlice';
@@ -34,6 +36,7 @@ export interface ChartState {
     digitalChannels: booleanTupleOf8;
     digitalChannelsVisible: boolean;
     timestampsVisible: boolean;
+    traceValueVisible: boolean;
     showSystemTime: boolean;
     yAxisLog: boolean;
     windowBeginLock: null | number;
@@ -57,6 +60,7 @@ const initialState = (): ChartState => ({
     digitalChannels: getDigitalChannels(),
     digitalChannelsVisible: getDigitalChannelsVisible(),
     timestampsVisible: getTimestampsVisible(),
+    traceValueVisible: getTraceValueVisible(),
     yAxisLog: false,
     windowBeginLock: null, // [microseconds]
     windowEndLock: null, // [microseconds]
@@ -206,6 +210,11 @@ const chartSlice = createSlice({
             const newVisibilityValue = !state.timestampsVisible;
             persistTimestampsVisible(newVisibilityValue);
             state.timestampsVisible = newVisibilityValue;
+        },
+        toggleTraceValue: state => {
+            const newVisibilityValue = !state.traceValueVisible;
+            persistTraceValueVisible(newVisibilityValue);
+            state.traceValueVisible = newVisibilityValue;
         },
         toggleYAxisLock(
             state,
@@ -371,6 +380,8 @@ export const isLiveMode = (state: RootState) =>
 export const getLiveModeFPS = (state: RootState) => state.app.chart.fps;
 export const isTimestampsVisible = (state: RootState) =>
     state.app.chart.timestampsVisible;
+export const isTraceValueVisible = (state: RootState) =>
+    state.app.chart.traceValueVisible;
 export const showSystemTime = (state: RootState) =>
     state.app.chart.showSystemTime;
 
@@ -396,6 +407,7 @@ export const {
     setYMax,
     toggleDigitalChannels,
     toggleTimestamps,
+    toggleTraceValue,
     toggleYAxisLock,
     toggleYAxisLog,
     setShowSettings,

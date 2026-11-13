@@ -32,6 +32,7 @@ import {
     getWindowDuration,
     isLiveMode,
     isTimestampsVisible,
+    isTraceValueVisible,
     showSystemTime,
 } from '../../slices/chartSlice';
 import {
@@ -41,6 +42,7 @@ import {
 } from '../../slices/triggerSlice';
 import { isScopePane } from '../../utils/panes';
 import { type CursorData } from './Chart';
+import { type AverageLine } from './data/dataAccumulator';
 import { type AmpereState } from './data/dataTypes';
 import crossHairPlugin from './plugins/chart.crossHair';
 import dragSelectPlugin, { type DragSelect } from './plugins/chart.dragSelect';
@@ -62,6 +64,8 @@ export interface AmpereChartOptions extends ChartOptions<'line'> {
     formatY: (current: number) => string;
     snapping: boolean;
     live: boolean;
+    traceValue: boolean;
+    averageLine: AverageLine[];
     windowDuration: number;
     cursor: Cursor;
     id?: string;
@@ -91,6 +95,7 @@ interface AmpereChartProperties {
     chartRef: React.MutableRefObject<null | AmpereChartJS>;
     cursorData: CursorData;
     lineData: AmpereState[];
+    averageLine: AverageLine[];
     processing: boolean;
     processingMessage?: string;
     processingPercent?: number;
@@ -151,6 +156,7 @@ export default ({
     chartRef,
     cursorData: { begin, end },
     lineData,
+    averageLine,
     processing,
     processingMessage,
     processingPercent,
@@ -158,6 +164,7 @@ export default ({
     const liveMode = useSelector(isLiveMode);
     const { yMin, yMax, yAxisLog } = useSelector(getChartYAxisRange);
     const timestampsVisible = useSelector(isTimestampsVisible);
+    const traceValue = useSelector(isTraceValueVisible);
     const { cursorBegin, cursorEnd } = useSelector(getCursorRange);
     const windowDuration = useSelector(getWindowDuration);
     const samplingRunning = useSelector(isSamplingRunning);
@@ -258,6 +265,8 @@ export default ({
         formatY: formatCurrent,
         snapping,
         live,
+        traceValue,
+        averageLine,
         windowDuration,
         cursor: { cursorBegin, cursorEnd },
         id: 'ampereChart',

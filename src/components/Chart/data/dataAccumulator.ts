@@ -123,7 +123,7 @@ export interface DataAccumulator {
     }>;
 }
 
-type AverageLine = { x: TimestampType; y: number; count: number };
+export type AverageLine = { x: TimestampType; y: number; count: number };
 
 type AccumulatedResult = {
     ampereLineData: AmpereState[];
