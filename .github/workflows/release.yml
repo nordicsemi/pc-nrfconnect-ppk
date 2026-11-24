@@ -1,4 +1,4 @@
-﻿name: Release
+name: Release
 
 on:
     workflow_dispatch:
@@ -15,6 +15,9 @@ on:
                     'Ref (Tag, branch, commit SHA) to release. Default to the
                     default branch'
                 type: string
+
+permissions:
+    contents: write
 
 jobs:
     release:
