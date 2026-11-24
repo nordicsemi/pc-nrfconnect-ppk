@@ -6,7 +6,6 @@ on:
             - opened
             - labeled
             - unlabeled
-            - synchronize
 
 jobs:
     check_labels:
