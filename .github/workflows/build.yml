@@ -8,6 +8,10 @@ on:
     pull_request:
         types: [opened, reopened, synchronize]
 
+permissions:
+    contents: read
+    pull-requests: write
+
 jobs:
     build:
         uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/build-app.yml@main

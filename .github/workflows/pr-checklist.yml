@@ -2,7 +2,7 @@ name: PR checklist
 
 on:
     pull_request:
-        types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+        types: [opened, edited]
 
 permissions:
     pull-requests: read

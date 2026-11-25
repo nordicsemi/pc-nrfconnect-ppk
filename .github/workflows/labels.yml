@@ -6,7 +6,9 @@ on:
             - opened
             - labeled
             - unlabeled
-            - synchronize
+
+permissions:
+    pull-requests: write
 
 jobs:
     check_labels:
